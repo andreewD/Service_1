@@ -1,8 +1,8 @@
 import httpErrors from "http-errors";
 import { response } from "./response.js";
-import { Home } from "./routes/index.js";
+import { Home, RawData } from "./routes/index.js";
 
-const routers = [];
+const routers = [RawData];
 
 const applyRoutes = (app) => {
   app.use("/", Home);
@@ -13,13 +13,12 @@ const applyRoutes = (app) => {
     next(new httpErrors.NotFound("This route does not exists"));
   });
   app.use((error, req, res, next) => {
-    response({
+    return response({
       error: true,
       message: error.message,
       res,
-      status: error.status,
+      status: 400,
     });
-    next();
   });
 };
 export { applyRoutes };
