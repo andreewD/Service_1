@@ -5,8 +5,13 @@
   "author": "andr33wD <hairton.anchi.d@uni.pe>",
   "license": "MIT",
   "type": "module",
+  "engines": {
+    "node": "^17",
+    "yarn": "^1.22"
+  },
   "scripts": {
-    "service": "nodemon"
+    "service": "nodemon",
+    "start":"node src/index.js"
   },
   "dependencies": {
     "@sinclair/typebox": "^0.23.5",
