@@ -18,9 +18,20 @@ class Server {
     this.#config();
   }
 
+  parseRawBody = (req, res, next) => {
+    req.setEncoding("utf8");
+    req.rawBody = "";
+    req.on("data", (chunk) => {
+      req.rawBody += chunk;
+    });
+    req.on("end", () => {
+      next();
+    });
+  };
+
   #config() {
     this.app.use(cors());
-    this.app.use(express.json());
+    this.app.use(this.parseRawBody);
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use((req, res, next) => {
       res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
@@ -28,7 +39,7 @@ class Server {
       res.header("Access-Control-Allow-Headers", "Authorization, Content-Type");
       next();
     });
-    applyRoutes(this.app)
+    applyRoutes(this.app);
   }
 
   start() {
